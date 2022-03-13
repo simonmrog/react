@@ -32,15 +32,19 @@ const NewsList = () => {
   return (
     <>
       <h1>Hacker News List</h1>
-      <input
-        type="text"
-        value={query}
-        onChange={(event) => setQuery(event.target.value)}
-      />
-      <button type="button" onClick={() => setSearch(query)}>
-        Search!
-      </button>
-
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          setSearch(query);
+        }}
+      >
+        <input
+          type="text"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+        />
+        <button type="submit">Search!</button>
+      </form>
       {error && <div>Something went wrong.</div>}
 
       {isLoading ? (
