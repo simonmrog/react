@@ -8,7 +8,7 @@ const NewsList = () => {
   const [query, setQuery] = useState("");
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -45,7 +45,7 @@ const NewsList = () => {
         />
         <button type="submit">Search!</button>
       </form>
-      {error && <div>Something went wrong.</div>}
+      {error && <div>Something went wrong: {error.message}</div>}
 
       {isLoading ? (
         <div>Loading...</div>
