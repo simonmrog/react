@@ -33,8 +33,8 @@ const NewsList = () => {
         <ul>
           {news &&
             news.hits.map((item) => (
-              <li>
-                <News key={item.objectID} data={item}></News>
+              <li key={item.objectID}>
+                <News data={item}></News>
               </li>
             ))}
         </ul>
