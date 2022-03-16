@@ -5,7 +5,9 @@ const News = ({ data }) => {
     <>
       <h3>{data.title}</h3>
       <h4>{data.author}</h4>
-      <a href={data.url}>{data.url}</a>
+      <a target="_blank" rel="noreferrer" href={data.url}>
+        {data.url}
+      </a>
     </>
   );
 };

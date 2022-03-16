@@ -1,33 +1,13 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
+import { useFetch } from "../hooks/useFetch.js";
 import News from "./News.jsx";
 
 const NewsList = () => {
-  const [news, setNews] = useState([]);
   const [query, setQuery] = useState("");
-  const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setError(false);
-        setIsLoading(true);
-        const result = await axios.get(
-          `https://hn.algolia.com/api/v1/search?query=${search}`
-        );
-        setNews(result.data.hits);
-      } catch (err) {
-        console.error(err.message);
-        setError(err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchData();
-  }, [search]);
+  const [{ data: news, isLoading, error }, setFetch] = useFetch(
+    "https://hn.algolia.com/api/v1/search"
+  );
 
   return (
     <>
@@ -35,7 +15,7 @@ const NewsList = () => {
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          setSearch(query);
+          setFetch(`https://hn.algolia.com/api/v1/search?query=${query}`);
         }}
       >
         <input
@@ -51,11 +31,12 @@ const NewsList = () => {
         <div>Loading...</div>
       ) : (
         <ul>
-          {news.map((item) => (
-            <li>
-              <News key={item.objectID} data={item}></News>
-            </li>
-          ))}
+          {news &&
+            news.hits.map((item) => (
+              <li>
+                <News key={item.objectID} data={item}></News>
+              </li>
+            ))}
         </ul>
       )}
     </>
