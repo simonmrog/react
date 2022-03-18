@@ -28,16 +28,20 @@ export const useFetch = (initUrl, method = "get") => {
   });
 
   useEffect(() => {
+    let mounted = true;
     const fetchData = async () => {
       dispatch({ type: "FETCH_INIT" });
       try {
         const result = await axios[method](url);
-        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+        if (mounted) dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
-        dispatch({ type: "FETCH_FAILURE", payload: err });
+        if (mounted) dispatch({ type: "FETCH_FAILURE", payload: err });
       }
     };
     fetchData();
+    return function cleanup() {
+      mounted = false;
+    };
   }, [url, method]);
 
   return [state, setUrl];
